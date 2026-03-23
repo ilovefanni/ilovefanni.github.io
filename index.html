@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>~100 ok, amiért szeretlek</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --rose:     #8a2040;
+    --rose-mid: #c06080;
+    --rose-lt:  #e0a0b0;
+    --bg:       #fdf6f8;
+    --petal:    #ffeaf2;
+  }
+
+  body {
+    background: var(--bg);
+    font-family: 'Lato', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+  }
+
+  /* ── FLOATING HEARTS BACKGROUND ── */
+  .hearts-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .hearts-bg span {
+    position: absolute;
+    bottom: -40px;
+    font-size: 1rem;
+    color: #e0a0b0;
+    opacity: 0;
+    animation: floatUp linear infinite;
+  }
+  @keyframes floatUp {
+    0%   { transform: translateY(0) scale(1); opacity: 0; }
+    10%  { opacity: 0.25; }
+    90%  { opacity: 0.15; }
+    100% { transform: translateY(-110vh) scale(1.4); opacity: 0; }
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 52px 20px 20px;
+  }
+
+  .header-deco {
+    font-size: 1rem;
+    color: var(--rose-lt);
+    letter-spacing: 0.5em;
+    margin-bottom: 12px;
+    opacity: 0.7;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(2rem, 6vw, 3.4rem);
+    color: var(--rose);
+    line-height: 1.15;
+  }
+
+  h1 em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--rose-mid);
+    font-size: 0.72em;
+    display: block;
+    margin-top: 4px;
+  }
+
+  .divider-line {
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--rose-lt), transparent);
+    margin: 18px auto 0;
+  }
+
+  /* ── JAR ILLUSTRATION ── */
+  .jar-section {
+    position: relative;
+    z-index: 1;
+    margin: 28px 0 10px;
+  }
+
+  /* ── BANNER WRAPPER ── */
+  .banner-section {
+    position: relative;
+    z-index: 1;
+    width: min(680px, 92vw);
+    margin: 10px auto 40px;
+  }
+
+  /* Label-style container (matches the jar label) */
+  .banner-frame {
+    background: linear-gradient(135deg, #fff5f7 0%, #ffeef5 50%, #fff5f0 100%);
+    border: 1.5px solid var(--rose-lt);
+    border-radius: 12px;
+    padding: 28px 32px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 32px rgba(180, 60, 100, 0.08);
+  }
+
+  .banner-frame::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 10% 50%, rgba(255,180,200,0.12) 0%, transparent 55%),
+      radial-gradient(ellipse at 90% 50%, rgba(255,150,180,0.10) 0%, transparent 55%);
+    pointer-events: none;
+  }
+
+  .banner-frame .corner-heart {
+    position: absolute;
+    font-size: 1.4rem;
+    color: var(--rose-lt);
+    opacity: 0.35;
+  }
+  .corner-heart.tl { top: 10px; left: 14px; }
+  .corner-heart.tr { top: 10px; right: 14px; }
+  .corner-heart.bl { bottom: 10px; left: 14px; }
+  .corner-heart.br { bottom: 10px; right: 14px; }
+
+  .banner-label {
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--rose-lt);
+    text-align: center;
+    margin-bottom: 14px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* The scrolling window */
+  .scroll-window {
+    position: relative;
+    height: 72px;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  /* Fade edges */
+  .scroll-window::before,
+  .scroll-window::after {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 60px;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .scroll-window::before {
+    left: 0;
+    background: linear-gradient(90deg, #ffeef5, transparent);
+  }
+  .scroll-window::after {
+    right: 0;
+    background: linear-gradient(270deg, #ffeef5, transparent);
+  }
+
+  /* The moving track */
+  .scroll-track {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    position: absolute;
+    top: 0; left: 0;
+    height: 100%;
+    will-change: transform;
+    white-space: nowrap;
+  }
+
+  .scroll-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 22px;
+    flex-shrink: 0;
+  }
+
+  .scroll-item .heart-icon {
+    color: var(--rose-mid);
+    font-size: 0.75rem;
+    flex-shrink: 0;
+    opacity: 0.7;
+  }
+
+  .scroll-item .reason {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(0.95rem, 2.5vw, 1.15rem);
+    color: var(--rose);
+    line-height: 1.3;
+  }
+
+  .scroll-item .sep {
+    color: var(--rose-lt);
+    font-size: 0.8rem;
+    margin-left: 10px;
+    opacity: 0.5;
+  }
+
+  /* Number badge */
+  .scroll-item .num {
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    font-size: 0.6rem;
+    color: var(--rose-lt);
+    letter-spacing: 0.1em;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* Speed indicator */
+  .speed-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .speed-dots {
+    display: flex;
+    gap: 4px;
+  }
+  .speed-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--rose-lt);
+    transition: background 0.4s, transform 0.4s;
+  }
+  .speed-dot.active {
+    background: var(--rose-mid);
+    transform: scale(1.3);
+  }
+
+  .speed-label {
+    font-size: 0.6rem;
+    color: var(--rose-lt);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    min-width: 80px;
+    text-align: center;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 0 20px 48px;
+    color: var(--rose-lt);
+  }
+
+  footer .footer-hearts {
+    font-size: 0.85rem;
+    letter-spacing: 0.4em;
+    margin-bottom: 8px;
+    opacity: 0.6;
+  }
+
+  footer p {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 0.8rem;
+    color: var(--rose-mid);
+    opacity: 0.7;
+  }
+
+  /* ── JAR SVG ── */
+  .jar-svg {
+    display: block;
+    margin: 0 auto;
+    filter: drop-shadow(0 4px 16px rgba(180,60,100,0.10));
+  }
+</style>
+</head>
+<body>
+
+<!-- Floating hearts background -->
+<div class="hearts-bg" id="heartsBg"></div>
+
+<!-- Header -->
+<header>
+  <div class="header-deco">♥ &nbsp; ♡ &nbsp; ♥ &nbsp; ♡ &nbsp; ♥</div>
+  <h1>
+    ~100 ok, amiért szeretlek
+    <em>(a többit már nem bírta el az üveg)</em>
+  </h1>
+  <div class="divider-line"></div>
+</header>
+
+<!-- Jar illustration -->
+<div class="jar-section">
+  <svg class="jar-svg" width="120" height="160" viewBox="0 0 120 160" xmlns="http://www.w3.org/2000/svg">
+    <!-- lid -->
+    <rect x="32" y="8" width="56" height="18" rx="4" fill="#f5c0d0" stroke="#e0a0b0" stroke-width="1"/>
+    <!-- lid shine -->
+    <rect x="36" y="11" width="48" height="5" rx="2" fill="white" opacity="0.3"/>
+    <!-- jar body -->
+    <rect x="22" y="24" width="76" height="120" rx="10" fill="#fff5f7" stroke="#e0a0b0" stroke-width="1.2"/>
+    <!-- jar shine -->
+    <rect x="28" y="30" width="14" height="80" rx="7" fill="white" opacity="0.35"/>
+    <!-- little scrolls inside -->
+    <g opacity="0.5">
+      <rect x="40" y="55" width="40" height="6" rx="3" fill="#f0b8cc"/>
+      <rect x="38" y="68" width="44" height="6" rx="3" fill="#f5c8d8"/>
+      <rect x="42" y="81" width="36" height="6" rx="3" fill="#f0b8cc"/>
+      <rect x="37" y="94" width="46" height="6" rx="3" fill="#f5c8d8"/>
+      <rect x="41" y="107" width="38" height="6" rx="3" fill="#f0b8cc"/>
+      <rect x="39" y="120" width="42" height="6" rx="3" fill="#f5c8d8"/>
+    </g>
+    <!-- label on jar -->
+    <rect x="30" y="44" width="60" height="22" rx="4" fill="white" opacity="0.7" stroke="#e8b0c8" stroke-width="0.6"/>
+    <text font-family="'Playfair Display', serif" font-style="italic" font-size="5" fill="#8a2040" text-anchor="middle" x="60" y="53">~100 ok</text>
+    <text font-family="'Playfair Display', serif" font-style="italic" font-size="4" fill="#c06080" text-anchor="middle" x="60" y="62">amiért szeretlek</text>
+    <!-- heart on lid -->
+    <text font-size="10" text-anchor="middle" x="60" y="21" fill="#c06080" opacity="0.6">♥</text>
+  </svg>
+</div>
+
+<!-- Banner -->
+<div class="banner-section">
+  <div class="banner-frame">
+    <div class="corner-heart tl">♥</div>
+    <div class="corner-heart tr">♡</div>
+    <div class="corner-heart bl">♡</div>
+    <div class="corner-heart br">♥</div>
+
+    <div class="banner-label">húzd ki a cetlit az üvegből, és olvasd el ♥</div>
+
+    <div class="scroll-window">
+      <div class="scroll-track" id="track"></div>
+    </div>
+
+    <div class="speed-row">
+      <div class="speed-dots" id="speedDots">
+        <div class="speed-dot active"></div>
+        <div class="speed-dot"></div>
+        <div class="speed-dot"></div>
+        <div class="speed-dot"></div>
+        <div class="speed-dot"></div>
+      </div>
+      <div class="speed-label" id="speedLabel">lassan...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-hearts">♥ &nbsp; ♡ &nbsp; ♥ &nbsp; ♡ &nbsp; ♥</div>
+  <p>a mi sztorink &mdash; 1 &eacute;v, &eacute;s csak az eleje</p>
+</footer>
+
+<script>
+const reasons = [
+  ["01","Mert a mel\u00f3ban kezd\u0151d\u00f6tt minden"],
+  ["02","Mert sok\u00e1ig ker\u00fclgett\u00fck egym\u00e1st"],
+  ["03","Mert v\u00e9g\u00fcl engem v\u00e1lasztott\u00e1l"],
+  ["04","Mert ez nem csak egy kis kaland lett"],
+  ["05","Mert most m\u00e1r \u00fagy n\u00e9z ki, \u00e9letre sz\u00f3l"],
+  ["06","Mert az els\u0151 randink annyira gagyi volt, hogy m\u00e1r j\u00f3 volt"],
+  ["07","Mert egy\u00fctt p\u00e1link\u00e1zni ment\u00fcnk a Gardenbe"],
+  ["08","Mert abb\u00f3l az est\u00e9b\u0151l valami komoly lett"],
+  ["09","Mert veled minden spont\u00e1n dolog m\u0171k\u00f6dik"],
+  ["10","Mert melletted mindig t\u00f6rt\u00e9nik valami"],
+  ["11","Mert elj\u00f6tt\u00e9l velem t\u00far\u00e1zni"],
+  ["12","Mert kib\u00edrod a term\u00e9szetet\u2026 nagj\u00e1b\u00f3l \ud83d\ude04"],
+  ["13","Mert nem rajongsz a f\u00e1k k\u00f6z\u00f6tt pisilni, de bev\u00e1llalod"],
+  ["14","Mert egy\u00fctt kaland az \u00e9let"],
+  ["15","Mert Szlov\u00e9ni\u00e1ban is egy\u00fctt voltunk"],
+  ["16","Mert veled minden utaz\u00e1s eml\u00e9k lesz"],
+  ["17","Mert mindig van k\u00f6z\u00f6s sztorink"],
+  ["18","Mert veled m\u00e9g a b\u00e9n\u00e1z\u00e1s is \u00e9lm\u00e9ny"],
+  ["19","Mert egy\u00fctt nevet\u00fcnk a m\u00faltunkon"],
+  ["20","Mert veled minden els\u0151 k\u00fcl\u00f6nleges"],
+  ["21","Mert szereted a Harry Potter vil\u00e1g\u00e1t"],
+  ["22","Mert szereted a Star Wars univerzumot"],
+  ["23","Mert im\u00e1dod a J\u00f3bar\u00e1tokat"],
+  ["24","Mert egy\u00fctt tudunk sorozatozni"],
+  ["25","Mert ugyanazokon a h\u00fclyeségeken nevet\u00fcnk"],
+  ["26","Mert van k\u00f6z\u00f6s vil\u00e1gunk"],
+  ["27","Mert k\u00f6nny\u0171 veled kapcsol\u00f3dni"],
+  ["28","Mert \u00e9rted a p\u00f3enjaimat"],
+  ["29","Mert n\u00e9ha m\u00e9g t\u00fal is sz\u00e1rnyalod \u0151ket"],
+  ["30","Mert sosem unalmas veled"],
+  ["31","Mert beleval\u00f3 vagy"],
+  ["32","Mert talpraesett vagy"],
+  ["33","Mert tudod, mit akarsz"],
+  ["34","Mert van tart\u00e1sod"],
+  ["35","Mert magabiztos vagy"],
+  ["36","Mert vag\u00e1ny vagy"],
+  ["37","Mert nem f\u00e9lsz \u00f6nmagad lenni"],
+  ["38","Mert inspir\u00e1lsz"],
+  ["39","Mert feln\u00e9zek r\u00e1d"],
+  ["40","Mert b\u00faszke vagyok r\u00e1d"],
+  ["41","Mert megvan a saj\u00e1t utad"],
+  ["42","Mert \u00e9p\u00edted a karriered"],
+  ["43","Mert c\u00e9ltudatos vagy"],
+  ["44","Mert kitar\u00f3 vagy"],
+  ["45","Mert nem adod fel k\u00f6nnyen"],
+  ["46","Mert er\u0151s vagy"],
+  ["47","Mert motiv\u00e1lsz engem is"],
+  ["48","Mert jobb emberr\u00e9 teszel"],
+  ["49","Mert fejl\u0151d\u00f6k melletted"],
+  ["50","Mert egy\u00fctt haladunk el\u0151re"],
+  ["51","Mert fontos neked a csal\u00e1d"],
+  ["52","Mert gy\u00f6ny\u00f6r\u0171 \u00e9rt\u00e9krended van"],
+  ["53","Mert tudom, hogy j\u00f3 anya leszel"],
+  ["54","Mert komolyan gondolkodsz a j\u00f6v\u0151r\u0151l"],
+  ["55","Mert lehet veled tervezni"],
+  ["56","Mert biztons\u00e1got adsz"],
+  ["57","Mert melletted nyugodt vagyok"],
+  ["58","Mert otthon \u00e9rzem magam veled"],
+  ["59","Mert te vagy az otthonom"],
+  ["60","Mert veled akarok j\u00f6v\u0151t"],
+  ["61","Mert mindig sz\u00e1m\u00edthatok r\u00e1d"],
+  ["62","Mert meghallgatsz"],
+  ["63","Mert meg\u00e9rtesz"],
+  ["64","Mert t\u0151r\u0151dsz velem"],
+  ["65","Mert figyelsz r\u00e1m"],
+  ["66","Mert ott vagy, amikor kell"],
+  ["67","Mert t\u00e1mogatod az \u00e1lmaimat"],
+  ["68","Mert hiszel bennem"],
+  ["69","Mert melletted nem vagyok egyedül"],
+  ["70","Mert csapat vagyunk"],
+  ["71","Mert gy\u00f6ny\u00f6r\u0171 vagy"],
+  ["72","Mert im\u00e1dom a mosolyod"],
+  ["73","Mert szeretem, ahogy r\u00e1m n\u00e9zel"],
+  ["74","Mert a jelenl\u00e9ted megnyugtat"],
+  ["75","Mert j\u00f3 hozz\u00e1d b\u00fajni"],
+  ["76","Mert a legjobb \u00f6lel\u00e9seid vannak"],
+  ["77","Mert hi\u00e1nyzol, amikor nem vagy ott"],
+  ["78","Mert veled akarok elaludni"],
+  ["79","Mert veled akarok \u00e9bredni"],
+  ["80","Mert egyszer\u0171en j\u00f3 veled lenni"],
+  ["81","Mert egy\u00fctt h\u00fcly\u00e9sked\u00fcnk"],
+  ["82","Mert \u00e9rted a s\u00f6t\u00e9t humorom"],
+  ["83","Mert nem veszed t\u00fal komolyan az \u00e9letet"],
+  ["84","Mert tudsz nevetni magadon"],
+  ["85","Mert feldobod a napjaimat"],
+  ["86","Mert mindig jobb kedvem lesz melletted"],
+  ["87","Mert te vagy a kedvenc emberem"],
+  ["88","Mert k\u00fcl\u00f6nleges vagy"],
+  ["89","Mert nincs m\u00e9g egy ilyen, mint te"],
+  ["90","Mert te vagy te"],
+  ["91","Mert egy\u00fctt kezdt\u00fck, amikor nem volt egyszer\u0171"],
+  ["92","Mert v\u00e9gigment\u00fcnk a \u201emi lesz ebb\u0151l?\u201d f\u00e1zison"],
+  ["93","Mert kitartottunk"],
+  ["94","Mert ebb\u0151l valami igaz lett"],
+  ["95","Mert minden nap egyre biztosabb vagyok benned"],
+  ["96","Mert veled akarok maradni"],
+  ["97","Mert veled k\u00e9pzelem el a j\u00f6v\u0151t"],
+  ["98","Mert te vagy az \u00e9n t\u00f6rt\u00e9netem"],
+  ["99","Mert ez a mi sztorink"],
+  ["100","Mert szeretlek \u2764\ufe0f"]
+];
+
+// Shuffle array
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+const hearts = ['♥','♡','♥','♡','♥'];
+const track = document.getElementById('track');
+const speedDots = document.querySelectorAll('.speed-dot');
+const speedLabel = document.getElementById('speedLabel');
+
+// Build a long shuffled list (3x the reasons, randomised)
+let pool = [...shuffle(reasons), ...shuffle(reasons), ...shuffle(reasons)];
+
+pool.forEach(([num, text], i) => {
+  const item = document.createElement('div');
+  item.className = 'scroll-item';
+  item.innerHTML = `
+    <span class="num">#${num}</span>
+    <span class="heart-icon">${hearts[i % hearts.length]}</span>
+    <span class="reason">${text}</span>
+    <span class="sep">✦</span>
+  `;
+  track.appendChild(item);
+});
+
+// Animation state
+let pos = 0;
+let speed = 0.4;       // px per frame – start slow
+let maxSpeed = 7.5;    // px per frame – peak speed
+let raf;
+let totalWidth = 0;
+
+// Speed stages for the dots indicator
+const stages = [
+  { threshold: 0,   label: 'lassan\u2026',    dot: 0 },
+  { threshold: 1.5, label: 'gyorsul\u2026',   dot: 1 },
+  { threshold: 3.0, label: 'egyre gyorsabb',  dot: 2 },
+  { threshold: 5.0, label: 'sz\u00e1rny\u00e1l\u2026', dot: 3 },
+  { threshold: 6.5, label: '\u2665 v\u00e9gtelen \u2665', dot: 4 },
+];
+
+function updateSpeedUI() {
+  let stage = stages[0];
+  for (const s of stages) {
+    if (speed >= s.threshold) stage = s;
+  }
+  speedDots.forEach((d, i) => d.classList.toggle('active', i <= stage.dot));
+  speedLabel.textContent = stage.label;
+}
+
+function animate() {
+  if (!totalWidth) {
+    totalWidth = track.scrollWidth / 3; // one third = one full set
+  }
+
+  // Accelerate gradually – ease in over ~25 seconds
+  if (speed < maxSpeed) {
+    speed += 0.003;
+  }
+
+  pos += speed;
+
+  // Loop: once we've scrolled one full set width, reset
+  if (pos >= totalWidth) {
+    pos -= totalWidth;
+  }
+
+  track.style.transform = `translateX(${-pos}px)`;
+  updateSpeedUI();
+  raf = requestAnimationFrame(animate);
+}
+
+// Wait for fonts + layout
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    animate();
+  }, 300);
+});
+
+// ── Floating hearts background ──
+const bg = document.getElementById('heartsBg');
+const heartChars = ['♥','♡','♥','♡'];
+for (let i = 0; i < 18; i++) {
+  const s = document.createElement('span');
+  s.textContent = heartChars[i % heartChars.length];
+  s.style.left = (Math.random() * 100) + '%';
+  s.style.fontSize = (0.6 + Math.random() * 0.8) + 'rem';
+  s.style.animationDuration = (12 + Math.random() * 18) + 's';
+  s.style.animationDelay = (Math.random() * 20) + 's';
+  bg.appendChild(s);
+}
+</script>
+</body>
+</html>
