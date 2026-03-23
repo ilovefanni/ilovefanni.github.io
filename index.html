@@ -234,8 +234,8 @@
 <header>
   <div class="header-deco">♥ &nbsp; ♡ &nbsp; ♥ &nbsp; ♡ &nbsp; ♥</div>
   <h1>
-    ~100 ok, amiért szeretlek
-    <em>(a többit már nem bírta el az üveg)</em>
+    A maradek végt∞len ok, amiért szeretlek
+    <em>(ezeket már nem bírta el az üveg)</em>
   </h1>
   <div class="divider-line"></div>
 </header>
@@ -246,7 +246,7 @@
     <span class="corner-heart tr">♡</span>
     <span class="corner-heart bl">♡</span>
     <span class="corner-heart br">♥</span>
-    <div class="card-num"  id="cardNum">#01</div>
+    <div style="display: none;" class="card-num"  id="cardNum">#01</div>
     <div class="card-heart" id="cardHeart">♥</div>
     <div class="card-divider"></div>
     <div class="card-text" id="cardText">Mert a melóban kezdődött minden</div>
@@ -254,7 +254,7 @@
   </div>
 </div>
 
-<div class="speed-row">
+<div style="display: none;" class="speed-row">
   <div class="speed-dots" id="speedDots">
     <div class="speed-dot active"></div>
     <div class="speed-dot"></div>
@@ -262,7 +262,7 @@
     <div class="speed-dot"></div>
     <div class="speed-dot"></div>
   </div>
-  <div class="speed-label" id="speedLabel">lassan...</div>
+  <div style="display: none;" class="speed-label" id="speedLabel">lassan...</div>
 </div>
 
 <footer>
@@ -371,7 +371,47 @@ const reasons = [
   ["97","Mert veled k\u00e9pzelem el a j\u00f6v\u0151t"],
   ["98","Mert te vagy az \u00e9n t\u00f6rt\u00e9netem"],
   ["99","Mert ez a mi sztorink"],
-  ["100","Mert szeretlek \u2764\ufe0f"]
+  ["100","Mert szeretlek \u2764\ufe0f"],
+  ["101","Mert veled minden hétköznap is különleges"],
+  ["102","Mert tudunk együtt csendben is létezni"],
+  ["103","Mert értékeled az apró dolgokat"],
+  ["104","Mert mindig tudsz meglepni"],
+  ["105","Mert szereted, amikor együtt főzünk"],
+  ["106","Mert még a legegyszerűbb program is jó veled"],
+  ["107","Mert melletted önmagam lehetek"],
+  ["108","Mert elfogadsz minden hülyeségemmel együtt"],
+  ["109","Mert tudsz komoly lenni, amikor kell"],
+  ["110","Mert tudsz laza lenni, amikor lehet"],
+  ["111","Mert veled jó tervezgetni a jövőt"],
+  ["112","Mert veled jó visszagondolni a múltra"],
+  ["113","Mert mindig van egy közös következő lépésünk"],
+  ["114","Mert nem félek melletted a holnaptól"],
+  ["115","Mert veled minden kihívás könnyebb"],
+  ["116","Mert együtt minden akadály kisebbnek tűnik"],
+  ["117","Mert tudom, hogy számíthatok rád bármikor"],
+  ["118","Mert sosem hagysz magamra"],
+  ["119","Mert mindig kiállsz mellettem"],
+  ["120","Mert együtt erősebbek vagyunk"],
+  ["121","Mert veled jó nevetni a semmin is"],
+  ["122","Mert egy pillantásból is megértjük egymást"],
+  ["123","Mert vannak saját kis szokásaink"],
+  ["124","Mert vannak saját kis poénjaink"],
+  ["125","Mert van saját világunk"],
+  ["126","Mert te érted igazán, ki vagyok"],
+  ["127","Mert tudod, mikor mire van szükségem"],
+  ["128","Mert mindig tudsz megnyugtatni"],
+  ["129","Mert jó érzés, hogy vagy nekem"],
+  ["130","Mert boldogabb vagyok veled"],
+  ["131","Mert veled minden nap számít"],
+  ["132","Mert együtt írjuk a történetünket"],
+  ["133","Mert minden emlékünk értékes"],
+  ["134","Mert még rengeteg közös kaland vár ránk"],
+  ["135","Mert veled akarom felfedezni a világot"],
+  ["136","Mert veled akarok öregedni"],
+  ["137","Mert veled minden teljesebb"],
+  ["138","Mert nélküled már nem lenne ugyanolyan"],
+  ["139","Mert te vagy az én emberem"],
+  ["140","Mert minden nap újra téged választanálak"]
 ];
 
 const hearts = ['♥','♡','♥','♡','♥','♡'];
